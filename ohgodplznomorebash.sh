@@ -9,6 +9,7 @@ function service_func() {
 }
 
 function killpid_func() {
+    echo "Please enter PID of process you wish to kill: "
     read pid
     process_name=$(ps -p $pid -o comm=)
     if [ -n "$process_name" ]; then
@@ -18,7 +19,8 @@ function killpid_func() {
         read confirmation
 
         if [ "$confirmation" = "y" ]; then
-            kill $PID
+            kill $pid
+            printf "Killed %d\n" "$pid"
         fi
     else
         echo "No process found with PID $pid"
@@ -31,11 +33,11 @@ function ident_func() {
     return 0;
 }
 
-function services_func() {
-    return 0;
-}
-
 function find_func() {
+    echo "Please enter the filename you want to search for: "
+    read filename
+    printf "Searching for files by filename: %s\n" "$filename"
+    find / -name $filename 2>/dev/null;
     return 0;
 }
 
