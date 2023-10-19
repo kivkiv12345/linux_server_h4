@@ -1,5 +1,157 @@
 #!/bin/bash
 
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+DEFAULT='\e[0m'
+
+# Function to switch to full-screen mode
+function enter_fullscreen() {
+  tput smcup  # Enter alternate screen buffer
+  clear
+  stty -echo
+  tput civis  # Hide the cursor
+}
+
+# Function to exit full-screen mode
+function exit_fullscreen() {
+  stty echo
+  tput cnorm  # Show the cursor
+  tput rmcup  # Exit alternate screen buffer
+  # clear
+}
+
+# Function to display animation
+function play_lineloader_animation() {
+  enter_fullscreen
+  for i in {1..10}; do
+    clear
+    case $i in
+      1)
+        echo -e "${GREEN}O${RED}|||||||||";;
+      2)
+        echo -e "${YELLOW}|${GREEN}O${RED}||||||||";;
+      3)
+        echo -e "${YELLOW}||${GREEN}O${RED}|||||||";;
+      4)
+        echo -e "${YELLOW}|||${GREEN}O${RED}||||||";;
+      5)
+        echo -e "${YELLOW}||||${GREEN}O${RED}|||||";;
+      6)
+        echo -e "${YELLOW}|||||${GREEN}O${RED}||||";;
+      7)
+        echo -e "${YELLOW}||||||${GREEN}O${RED}|||";;
+      8)
+        echo -e "${YELLOW}|||||||${GREEN}O${RED}||";;
+      9)
+        echo -e "${YELLOW}||||||||${GREEN}O${RED}|";;
+      10)
+        echo -e "${YELLOW}|||||||||${GREEN}O${DEFAULT}";;
+    esac
+    sleep 0.5
+  done
+  exit_fullscreen
+}
+
+function play_circleloader_animation() {
+  enter_fullscreen
+  for i in {1..15}; do
+    clear
+    case $i in
+      1) 
+        echo -e ""
+        echo -e " ${GREEN}O${RED}++"
+        echo -e " ${RED}+ +"
+        echo -e " ${RED}+++"
+          ;;
+      2) 
+        echo -e ""
+        echo -e " ${YELLOW}#${GREEN}O${RED}+"
+        echo -e " ${RED}+ +"
+        echo -e " ${RED}+++"
+          ;;
+      3) 
+        echo -e ""
+        echo -e " ${YELLOW}##${GREEN}O"
+        echo -e " ${RED}+ +"
+        echo -e " ${RED}+++"
+          ;;
+      4) 
+        echo -e ""
+        echo -e " ${YELLOW}###"
+        echo -e " ${RED}+ ${GREEN}O"
+        echo -e " ${RED}+++"
+          ;;
+      5) 
+        echo -e ""
+        echo -e " ${YELLOW}###"
+        echo -e " ${RED}+ ${YELLOW}#"
+        echo -e " ${RED}++${GREEN}O"
+          ;;
+      6) 
+        echo -e ""
+        echo -e " ${YELLOW}###"
+        echo -e " ${RED}+ ${YELLOW}#"
+        echo -e " ${RED}+${GREEN}O${YELLOW}#"
+          ;;
+      7) 
+        echo -e ""
+        echo -e " ${YELLOW}###"
+        echo -e " ${RED}+ ${YELLOW}#"
+        echo -e " ${GREEN}O${YELLOW}##"
+          ;;
+      8) 
+        echo -e ""
+        echo -e " ${YELLOW}###"
+        echo -e " ${GREEN}O ${YELLOW}#"
+        echo -e " ${YELLOW}###"
+          ;;
+      9) 
+        echo -e ""
+        echo -e " ${YELLOW}###"
+        echo -e " ${YELLOW}#${GREEN}O${YELLOW}#"
+        echo -e " ${YELLOW}###"
+          ;;
+      10) 
+        echo -e ""
+        echo -e " ${YELLOW}#${GREEN}O${YELLOW}#"
+        echo -e " ${GREEN}OOO"
+        echo -e " ${YELLOW}#${GREEN}O${YELLOW}#"
+          ;;
+      11) 
+        echo -e "${GREEN}  O"
+        echo -e "${GREEN} OOO"
+        echo -e "${GREEN}OO OO"
+        echo -e "${GREEN} OOO"
+        echo -e "${GREEN}  O"
+          ;;
+      12) 
+        echo -e "${GREEN}  O"
+        echo -e "${GREEN} O O"
+        echo -e "${GREEN}O   O"
+        echo -e "${GREEN} O O"
+        echo -e "${GREEN}  O"
+          ;;
+      13) 
+        echo -e "${GREEN}  O"
+        echo -e "${GREEN}    "
+        echo -e "${GREEN}O   O"
+        echo -e "${GREEN}    "
+        echo -e "${GREEN}  O"
+          ;;
+      14) 
+        echo -e "${GREEN}  O"
+          ;;
+      15) 
+        echo -e "${GREEN}Fin${DEFAULT}"
+        sleep 0.5
+          ;;
+    esac
+    sleep 0.4
+  done
+  exit_fullscreen
+}
+
 function service_func() {
     # ps --no-headers --format "pid,comm"
     # ps auxw --no-headers --format "pid,comm"
@@ -42,10 +194,16 @@ function find_func() {
 }
 
 function animation_func() {
-    case $((1 + RANDOM % 1)) in
+    case $((1 + RANDOM % 3)) in
         1)
             # Cmatrix animation
             timeout --foreground 3 cmatrix;
+            ;;
+        2)
+            play_lineloader_animation;
+            ;;
+        3)
+            play_circleloader_animation;
             ;;
         *)
             echo "Invalid option."
